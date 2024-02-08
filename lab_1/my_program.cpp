@@ -3,22 +3,36 @@
 
 using namespace std;
 
+void solution(double const  a, double const  b, double const  c){
+    if (a != 0 and b !=0){
+        if (a != 0) {
+            double D = b * b - 4 * a * c;
+
+            if (D > 0) {
+                double x1 = (-b + sqrt(D)) / (2 * a);
+                double x2 = (-b - sqrt(D)) / (2 * a);
+                cout << "Уравнение имеет два корня: x1 = " << x1 << ", x2 = " << x2 << endl;
+            } else if (D == 0) {
+                double x = -b / (2 * a);
+                cout << "Уравнение имеет один корень: x = " << x << endl;
+            } else {
+                cout << "Уравнение не имеет действительных корней." << endl;
+            }
+        } else {
+            double x = - c / b;
+            cout << "Уравнение имеет один корень: x = " << x << endl;
+        }
+    } else {
+        cout << "Уравнение не имеет смысла" << endl;
+    }
+};
+
+
 int main() {
     double a, b, c;
     cout << "Введите коэффициенты a, b, c через пробел: ";
     cin >> a >> b >> c;
-    double D = b * b - 4 * a * c;
-
-    if (D > 0) {
-        double x1 = (-b + sqrt(D)) / (2 * a);
-        double x2 = (-b - sqrt(D)) / (2 * a);
-        cout << "Уравнение имеет два корня: x1 = " << x1 << ", x2 = " << x2 << endl;
-    } else if (D == 0) {
-        double x = -b / (2 * a);
-        cout << "Уравнение имеет один корень: x = " << x << endl;
-    } else {
-        cout << "Уравнение не имеет действительных корней." << endl;
-    }
+    solution(a,b,c);
     return 0;
 }
 
