@@ -23,7 +23,6 @@ void geting_roots(double & a, double & b, double & c){
     b = geting_root('b');
     c = geting_root('c');
     
-
     if (a == 0 and b == 0){ 
         cout << "Уравнение не имеет смысла" << endl;
         geting_roots(a, b, c);
