@@ -180,12 +180,12 @@ public:
 
             if (vec1->size() != vec2->size()) {
                 similar = false; // Вложенные векторы имеют разную длину, не совпадают
-            }
-
-            for (int j = 0; j < vec1->size(); j++) {
-                if (std::abs((*vec1)[j] - (*vec2)[j]) > eps) {
-                    similar = false;
-                    break;
+            }else{
+                for (int j = 0; j < vec1->size(); j++) {
+                    if (std::abs((*vec1)[j] - (*vec2)[j]) > eps) {
+                        similar = false;
+                        break;
+                    }
                 }
             }
 
