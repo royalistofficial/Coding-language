@@ -2,7 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <vector>
-#include <unistd.h>
+
 
 const int WIDTH = 600;
 const int HEIGHT = 600;
@@ -20,10 +20,14 @@ const std::vector<std::vector<float>> COLORS = {
     {0.0f, 1.0f, 1.0f},  // голубой
     {0.5f, 0.5f, 0.5f}, // серый
     {0.75f, 0.25f, 0.0f}, // оранжевый
-    // {0.0f, 0.5f, 0.5f}, // бирюзовый
-    // {0.5f, 0.0f, 0.5f}, // пурпурный
-    // {0.25f, 0.75f, 0.0f}, // салатовый
-    // {0.75f, 0.75f, 0.75f} // светло-серый
+    {0.0f, 0.5f, 0.5f}, // бирюзовый
+    {0.5f, 0.0f, 0.5f}, // пурпурный
+    {0.25f, 0.75f, 0.0f}, // салатовый
+    {0.75f, 0.75f, 0.75f}, // светло-серый
+    {0.25f, 0.25f, 0.25f}, // темно-серый
+    {0.9f, 0.9f, 0.9f}, // почти белый
+    {0.6f, 0.2f, 0.8f}, // малиновый
+    {0.4f, 0.6f, 0.2f}, // оливковый
 };
 
 std::vector<std::vector<int>> grid(GRID_SIZE, std::vector<int>(GRID_SIZE));
@@ -103,7 +107,47 @@ bool checkSequence(int row, int col) {
 
     return false;
 }
+void paintBonus(const int row, const int col){
 
+    int paintBonusBlock = 0;
+    int rowPaint, colPaint;
+
+    while (true)
+    {
+        rowPaint = rand() % GRID_SIZE;
+        colPaint = rand() % GRID_SIZE;  
+        if ((grid[rowPaint][colPaint] > 0)&&
+             (abs(rowPaint-row)<=3 || abs(colPaint-col)<=3)){
+            grid[rowPaint][colPaint] = -grid[row][col];
+            break;
+        }    
+    }
+
+    while (paintBonusBlock < 2)
+    {
+        int rowPaint_2 = rand() % GRID_SIZE;
+        int colPaint_2 = rand() % GRID_SIZE;  
+        if ((abs(rowPaint-rowPaint_2)>1 || abs(colPaint-colPaint_2)>1)&&
+            (abs(rowPaint-rowPaint_2)<=3 || abs(colPaint-colPaint_2)<=3)&&(
+                grid[rowPaint_2][colPaint_2] > 0)){
+            grid[rowPaint_2][colPaint_2] = -grid[row][col];
+            paintBonusBlock++;
+        }    
+    }
+}
+void BombBonus(const int row, const int col){
+    int BombBonusBlock = 0;
+    while (BombBonusBlock < 5)
+    {
+        int rowPaint = rand() % GRID_SIZE;
+        int colPaint = rand() % GRID_SIZE;  
+        if ((grid[rowPaint][colPaint] > 0)){
+            grid[rowPaint][colPaint] = 0;
+            BombBonusBlock++;
+        }    
+    }
+
+}
 void destroySequence() {
     bool sequenceFound = true;
     while (sequenceFound) {
@@ -121,10 +165,14 @@ void destroySequence() {
     for (int i = 0; i < GRID_SIZE; i++) {
         for (int j = 0; j < GRID_SIZE; j++) {
             if (grid[i][j] < 0){
-                grid[i][j] = 0;
+                int randBonus = rand() % 10; 
+                if (randBonus == 0)  paintBonus(i, j);
+                else if (randBonus == 1)  BombBonus(i, j);
+                grid[i][j] = 0; 
             }
         }
     }
+    
 }
 
 void blackBlockUp(){
@@ -137,7 +185,6 @@ void blackBlockUp(){
                     sequenceBlack = true;
                     std::swap(grid[i][j], grid[i-1][j]);
                     drawGrid();
-                    sleep(0.5);
                 }
             }
         }
