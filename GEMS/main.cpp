@@ -6,7 +6,7 @@
 
 const int WIDTH = 600;
 const int HEIGHT = 600;
-const int GRID_SIZE = 10; // размер сетки (GRID_SIZExGRID_SIZE квадратов)
+const int GRID_SIZE = 20; // размер сетки (GRID_SIZExGRID_SIZE квадратов)
 const float SQUARE_SIZE = WIDTH / GRID_SIZE; // размер каждого квадрата
 
 // Цвета квадратов
@@ -19,7 +19,7 @@ const std::vector<std::vector<float>> COLORS = {
     {1.0f, 0.0f, 1.0f}, // фиолетовый
     {0.0f, 1.0f, 1.0f},  // голубой
     {0.5f, 0.5f, 0.5f}, // серый
-    // {0.75f, 0.25f, 0.0f}, // оранжевый
+    {0.75f, 0.25f, 0.0f}, // оранжевый
     // {0.0f, 0.5f, 0.5f}, // бирюзовый
     // {0.5f, 0.0f, 0.5f}, // пурпурный
     // {0.25f, 0.75f, 0.0f}, // салатовый
