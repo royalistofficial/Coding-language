@@ -2,9 +2,7 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <vector>
-#include <cstdlib>
 #include <unistd.h>
-#include <time.h>
 
 const int WIDTH = 600;
 const int HEIGHT = 600;
@@ -19,7 +17,13 @@ const std::vector<std::vector<float>> COLORS = {
     {0.0f, 0.0f, 1.0f}, // синий
     {1.0f, 1.0f, 0.0f}, // желтый
     {1.0f, 0.0f, 1.0f}, // фиолетовый
-    {0.0f, 1.0f, 1.0f}  // голубой
+    {0.0f, 1.0f, 1.0f},  // голубой
+    {0.5f, 0.5f, 0.5f}, // серый
+    // {0.75f, 0.25f, 0.0f}, // оранжевый
+    // {0.0f, 0.5f, 0.5f}, // бирюзовый
+    // {0.5f, 0.0f, 0.5f}, // пурпурный
+    // {0.25f, 0.75f, 0.0f}, // салатовый
+    // {0.75f, 0.75f, 0.75f} // светло-серый
 };
 
 std::vector<std::vector<int>> grid(GRID_SIZE, std::vector<int>(GRID_SIZE));
@@ -56,27 +60,46 @@ void drawGrid() {
 }
 
 bool checkSequence(int row, int col) {
-   // Проверка горизонтальных линий
+    if (grid[row][col] <= 0)
+        return false;
     int sequenceLength = 0;
-    for (int i = row - 2; i <= row + 2; i++) {
-        if (i >= 0 && i < GRID_SIZE && abs(grid[i][col]) == abs(grid[row][col]) && grid[row][col] > 0) {
-            sequenceLength++;
-            if (sequenceLength >= 3) return true;
-        } else {
-            sequenceLength = 0;
+    for (int i = row - 1; i <= row + 1; i++) {
+        if(i >= 0 && i < GRID_SIZE){
+            if(grid[i][col] == -grid[row][col]) return true;
+            if (grid[i][col] == grid[row][col]) sequenceLength++;
         }
     }
 
-    // Проверка вертикальных линий
-    sequenceLength = 0;
     for (int j = col - 2; j <= col + 2; j++) {
-        if (j >= 0 && j < GRID_SIZE && abs(grid[row][j]) == abs(grid[row][col]) && grid[row][col] > 0) {
-            sequenceLength++;
-            if (sequenceLength >= 3) return true;
-        } else {
-            sequenceLength = 0;
-        }
+         if (j >= 0 && j < GRID_SIZE){
+            if(grid[row][j] == -grid[row][col]) return true;
+            if (grid[row][j] == grid[row][col]) sequenceLength++;
+         }
     }
+    if (sequenceLength >= 4)return true;
+
+    // для 3 в ряд 
+    // // Проверка горизонтальных линий
+    // int sequenceLength = 0;
+    // for (int i = row - 2; i <= row + 2; i++) {
+    //     if (i >= 0 && i < GRID_SIZE && abs(grid[i][col]) == abs(grid[row][col]) && grid[row][col] > 0) {
+    //         sequenceLength++;
+    //         if (sequenceLength >= 3) return true;
+    //     } else {
+    //         sequenceLength = 0;
+    //     }
+    // }
+
+    // // Проверка вертикальных линий
+    // sequenceLength = 0;
+    // for (int j = col - 2; j <= col + 2; j++) {
+    //     if (j >= 0 && j < GRID_SIZE && abs(grid[row][j]) == abs(grid[row][col]) && grid[row][col] > 0) {
+    //         sequenceLength++;
+    //         if (sequenceLength >= 3) return true;
+    //     } else {
+    //         sequenceLength = 0;
+    //     }
+    // }
 
     return false;
 }
@@ -113,6 +136,8 @@ void blackBlockUp(){
                 if (grid[i][j] == 0 && grid[i-1][j] != 0){
                     sequenceBlack = true;
                     std::swap(grid[i][j], grid[i-1][j]);
+                    drawGrid();
+                    sleep(0.5);
                 }
             }
         }
@@ -122,8 +147,6 @@ void blackBlockUp(){
 void cleanBlackkBloc(){
     bool sequenceBlack = true;
     blackBlockUp();
-    // drawGrid();
-    // sleep(1);
     while (sequenceBlack) {
         sequenceBlack = false;
         for (int i = 0; i < GRID_SIZE; i++) {
@@ -147,6 +170,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         if ((prevRow != -1 && prevCol != -1) && (abs(prevRow-row) <= 1 && abs(prevCol - col) <= 1)) {
             // свап ячеек
             std::swap(grid[prevRow][prevCol], grid[row][col]);
+            // if  (!(checkSequence(row, col) || checkSequence(prevRow, prevCol))) std::swap(grid[prevRow][prevCol], grid[row][col]);
             prevRow = -1;
             prevCol = -1;
         }else{
