@@ -3,7 +3,6 @@
 #include <iostream>
 #include <vector>
 
-
 const int WIDTH = 600;
 const int HEIGHT = 600;
 const int GRID_SIZE = 20; // размер сетки (GRID_SIZExGRID_SIZE квадратов)
@@ -32,6 +31,14 @@ const std::vector<std::vector<float>> COLORS = {
 
 std::vector<std::vector<int>> grid(GRID_SIZE, std::vector<int>(GRID_SIZE));
 
+// у меня не работала sleep()
+void sleep(){
+    for (int i = 0; i < 1000; i++) {
+        for (int j = 0; j < 2000; j++) {
+			int k = i * j;
+        }
+    }
+}
 void drawSquare(int row, int col, float r, float g, float b) {
 	const float border_width = 5.0f; // Ширина границы
 
@@ -185,6 +192,7 @@ void blackBlockUp(){
                     sequenceBlack = true;
                     std::swap(grid[i][j], grid[i-1][j]);
                     drawGrid();
+                    sleep();
                 }
             }
         }
@@ -193,8 +201,8 @@ void blackBlockUp(){
 
 void cleanBlackkBloc(){
     bool sequenceBlack = true;
-    blackBlockUp();
     while (sequenceBlack) {
+        blackBlockUp();
         sequenceBlack = false;
         for (int i = 0; i < GRID_SIZE; i++) {
             if (grid[0][i] == 0){
@@ -214,7 +222,7 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mods)
         int row = static_cast<int>(ypos / SQUARE_SIZE);
         int col = static_cast<int>(xpos / SQUARE_SIZE);
 
-        if ((prevRow != -1 && prevCol != -1) && (abs(prevRow-row) <= 1 && abs(prevCol - col) <= 1)) {
+        if ((prevRow != -1 && prevCol != -1) && (abs(prevRow-row) <= 1 && abs(prevCol - col) <= 1 && !(abs(prevRow-row) == 1 && abs(prevCol - col) == 1))) {
             // свап ячеек
             std::swap(grid[prevRow][prevCol], grid[row][col]);
             // if  (!(checkSequence(row, col) || checkSequence(prevRow, prevCol))) std::swap(grid[prevRow][prevCol], grid[row][col]);
@@ -256,6 +264,8 @@ int main() {
 
 
     while (!glfwWindowShouldClose(window)) {
+        sleep();
+
         glClear(GL_COLOR_BUFFER_BIT);
 
         drawGrid();
