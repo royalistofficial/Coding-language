@@ -14,66 +14,107 @@ const std::vector<std::vector<float>> COLORS = {
     {1.0f, 0.0f, 0.0f}, // красный
     {0.0f, 1.0f, 0.0f}, // зеленый
     {0.0f, 0.0f, 1.0f}, // синий
-    {1.0f, 1.0f, 0.0f}, // желтый
-    {1.0f, 0.0f, 1.0f}, // фиолетовый
-    {0.0f, 1.0f, 1.0f},  // голубой
-    {0.5f, 0.5f, 0.5f}, // серый
-    {0.75f, 0.25f, 0.0f}, // оранжевый
-    {0.0f, 0.5f, 0.5f}, // бирюзовый
-    {0.5f, 0.0f, 0.5f}, // пурпурный
-    {0.25f, 0.75f, 0.0f}, // салатовый
-    {0.75f, 0.75f, 0.75f}, // светло-серый
-    {0.25f, 0.25f, 0.25f}, // темно-серый
-    {0.9f, 0.9f, 0.9f}, // почти белый
-    {0.6f, 0.2f, 0.8f}, // малиновый
-    {0.4f, 0.6f, 0.2f}, // оливковый
+    // {1.0f, 1.0f, 0.0f}, // желтый
+    // {1.0f, 0.0f, 1.0f}, // фиолетовый
+    // {0.0f, 1.0f, 1.0f},  // голубой
+    // {0.5f, 0.5f, 0.5f}, // серый
+    // {0.75f, 0.25f, 0.0f}, // оранжевый
+    // {0.0f, 0.5f, 0.5f}, // бирюзовый
+    // {0.5f, 0.0f, 0.5f}, // пурпурный
+    // {0.25f, 0.75f, 0.0f}, // салатовый
+    // {0.75f, 0.75f, 0.75f}, // светло-серый
+    // {0.25f, 0.25f, 0.25f}, // темно-серый
+    // {0.9f, 0.9f, 0.9f}, // почти белый
+    // {0.6f, 0.2f, 0.8f}, // малиновый
+    // {0.4f, 0.6f, 0.2f}, // оливковый
 };
 
 struct Square {
-    std::vector<float> color;  // цвет квадрата
-    float destructibility;     // разрушаемость квадрата
+    float colorR;
+    float colorG;
+    float colorB;  // цвет квадрата
+    bool destructibility;     // разрушаемость квадрата
 
-    Square(const std::vector<float>& color, float destructibility)
-        : color(color), destructibility(destructibility) {}
+    Square(float r, float g, float b, bool destructibility) {
+        this->colorR = r;
+        this->colorG = g;
+        this->colorB = b;
+        this->destructibility = destructibility;
+    }
 };
 
-std::vector<std::vector<Square>> grid(GRID_SIZE, std::vector<Square>(GRID_SIZE));
+class Battlefield {
+public:
+    Battlefield() {
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                grid[i][j] = nullptr;
+            }
+        }
+        for (int i = 1; i < GRID_SIZE/2; i++) {
+            for (int j = 1; j < GRID_SIZE-1; j++) {
+                int colorIndex =  1 + rand() % (COLORS.size() - 1);
+                grid[i][j] = new Square(COLORS[colorIndex][0], COLORS[colorIndex][1], COLORS[colorIndex][2], true);
+            }
+        }
+        for (int i = 0; i < GRID_SIZE; i++) {
+            grid[0][i] = new Square(1.0f, 1.0f, 1.0f, false);
+        }
+        for (int i = 1; i < GRID_SIZE; i++) {
+            grid[i][0] = new Square(1.0f, 1.0f, 1.0f, false);
+            grid[i][GRID_SIZE-1] = new Square(1.0f, 1.0f, 1.0f, false);
+        }
 
+    }
+    void drawBattlefield(){
+        drawGrid();
+    }
+    ~Battlefield() {
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                delete grid[i][j];
+            }
+        }
+        
+    }
 
-void drawSquare(int row, int col, Square square) {
+private:
+    Square *grid[GRID_SIZE][GRID_SIZE];
 
-    float r = square.color[0];
-    float g = square.color[1];
-    float b = square.color[2];
-	const float border_width = 5.0f; // Ширина границы
-
-    // Нарисовать границу
-    glColor3f(0.0f, 0.0f, 0.0f); // Черный цвет
-    glLineWidth(border_width); // Толщина линии
-    glBegin(GL_LINE_LOOP);
-    glVertex2f(-1.0f + 2.0f * (col) / GRID_SIZE, 1.0f - 2.0f * (row) / GRID_SIZE);
-    glVertex2f(-1.0f + 2.0f * (col+1) / GRID_SIZE, 1.0f - 2.0f * (row) / GRID_SIZE);
-    glVertex2f(-1.0f + 2.0f * (col+1) / GRID_SIZE, 1.0f - 2.0f * (row+1) / GRID_SIZE);
-    glVertex2f(-1.0f + 2.0f * (col) / GRID_SIZE, 1.0f - 2.0f * (row+1) / GRID_SIZE);
-    glEnd();
-
-    // Нарисовать внутреннюю часть квадрата
-    glColor3f(r, g, b);
-    glBegin(GL_QUADS);
-    glVertex2f(-1.0f + 2.0f * (col) / GRID_SIZE, 1.0f - 2.0f * (row) / GRID_SIZE);
-    glVertex2f(-1.0f + 2.0f * (col+1) / GRID_SIZE, 1.0f - 2.0f * (row) / GRID_SIZE);
-    glVertex2f(-1.0f + 2.0f * (col+1) / GRID_SIZE, 1.0f - 2.0f * (row+1) / GRID_SIZE);
-    glVertex2f(-1.0f + 2.0f * (col) / GRID_SIZE, 1.0f - 2.0f * (row+1) / GRID_SIZE);
-    glEnd();
-}
-
-void drawGrid() {
-    for (int i = 0; i < GRID_SIZE; i++) {
-        for (int j = 0; j < GRID_SIZE; j++) {
-			drawSquare(i, j, grid[i][j]);
+    void drawGrid() {
+        for (int i = 0; i < GRID_SIZE; i++) {
+            for (int j = 0; j < GRID_SIZE; j++) {
+                if ( grid[i][j] != nullptr)
+                    drawSquare(i, j, grid[i][j]);
+            }
         }
     }
-}
+
+    static void drawSquare(int row, int col, Square* square) {
+
+        const float border_width = 5.0f; // Ширина границы
+
+        // Нарисовать границу
+        glColor3f(0.0f, 0.0f, 0.0f); // Черный цвет
+        glLineWidth(border_width); // Толщина линии
+        glBegin(GL_LINE_LOOP);
+        glVertex2f(-1.0f + 2.0f * (col) / GRID_SIZE, 1.0f - 2.0f * (row) / GRID_SIZE);
+        glVertex2f(-1.0f + 2.0f * (col+1) / GRID_SIZE, 1.0f - 2.0f * (row) / GRID_SIZE);
+        glVertex2f(-1.0f + 2.0f * (col+1) / GRID_SIZE, 1.0f - 2.0f * (row+1) / GRID_SIZE);
+        glVertex2f(-1.0f + 2.0f * (col) / GRID_SIZE, 1.0f - 2.0f * (row+1) / GRID_SIZE);
+        glEnd();
+
+        // Нарисовать внутреннюю часть квадрата
+        glColor3f( (*square).colorR,  (*square).colorG,  (*square).colorB);
+        glBegin(GL_QUADS);
+        glVertex2f(-1.0f + 2.0f * (col) / GRID_SIZE, 1.0f - 2.0f * (row) / GRID_SIZE);
+        glVertex2f(-1.0f + 2.0f * (col+1) / GRID_SIZE, 1.0f - 2.0f * (row) / GRID_SIZE);
+        glVertex2f(-1.0f + 2.0f * (col+1) / GRID_SIZE, 1.0f - 2.0f * (row+1) / GRID_SIZE);
+        glVertex2f(-1.0f + 2.0f * (col) / GRID_SIZE, 1.0f - 2.0f * (row+1) / GRID_SIZE);
+        glEnd();
+    }
+};
+
 
 
 int main() {
@@ -81,16 +122,9 @@ int main() {
     srand(static_cast<unsigned int>(time(0)));
 
     // Заполнение сетки случайными значениями
-    for (int i = 0; i < GRID_SIZE; i++) {
-        for (int j = 0; j < GRID_SIZE; j++) {
-            if (i < 50)
-                grid[i][j] = Square(COLORS[1 + rand() % (COLORS.size() - 1)], true);
-            else
-                grid[i][j] = Square(COLORS[0], true);
-        }
-    }
 	
     GLFWwindow* window;
+    Battlefield battlefield =  Battlefield ();
 
     if (!glfwInit())
         return -1;
@@ -109,14 +143,13 @@ int main() {
 
         glClear(GL_COLOR_BUFFER_BIT);
 
-        drawGrid();
-
+        battlefield.drawBattlefield();
 
         glfwSwapBuffers(window);
 
         glfwPollEvents();
     }
-
+    // delete battlefield;
     glfwTerminate();
     return 0;
 }
