@@ -1,7 +1,7 @@
-#include <GL/glut.h>
 #include <GLFW/glfw3.h>
 #include <iostream>
 #include <vector>
+#include <cmath>
 
 const int WIDTH = 600;
 const int HEIGHT = 600;
@@ -46,17 +46,20 @@ struct Square {
 class Battlefield {
 public:
     Battlefield() {
+        // создание поля
         for (int i = 0; i < GRID_SIZE; i++) {
             for (int j = 0; j < GRID_SIZE; j++) {
                 grid[i][j] = nullptr;
             }
         }
+        // заполнение разрушающимеся блоками
         for (int i = 1; i < GRID_SIZE/2; i++) {
             for (int j = 1; j < GRID_SIZE-1; j++) {
                 int colorIndex =  1 + rand() % (COLORS.size() - 1);
                 grid[i][j] = new Square(COLORS[colorIndex][0], COLORS[colorIndex][1], COLORS[colorIndex][2], true);
             }
         }
+        // граница
         for (int i = 0; i < GRID_SIZE; i++) {
             grid[0][i] = new Square(1.0f, 1.0f, 1.0f, false);
         }
@@ -115,16 +118,89 @@ private:
     }
 };
 
+class Plarform{
+    public:
+    void drawPlarform(){
+        draw();
+    }
+    void MovePlarform(float dx){ 
+        if((dx > 0) && (this->x + (float(SizePlarform - 1) / (GRID_SIZE * 2.0f)) < 1))
+            this->x += dx;
+        else if ((dx < 0) && (this->x - (float(SizePlarform - 1) / (GRID_SIZE * 2.0f)) > -1))
+            this->x += dx;
+    }
 
+    private:
+    float x = 0;
+    int SizePlarform = 50;
+    void draw(){
+        glColor3f(1.0f,  1.0f,  1.0f);
+        glBegin(GL_QUADS);
+        glVertex2f(this->x - (float(SizePlarform) / (GRID_SIZE * 2.0f)), -1.0f + 1.0f/ GRID_SIZE);
+        glVertex2f(this->x + (float(SizePlarform) / (GRID_SIZE * 2.0f)), -1.0f + 1.0f/ GRID_SIZE);
+        glVertex2f(this->x + (float(SizePlarform) / (GRID_SIZE * 2.0f)), -1.0f);
+        glVertex2f(this->x - (float(SizePlarform) / (GRID_SIZE * 2.0f)), -1.0f);
+        glEnd();
+
+    }
+};
+class Ball {
+public:
+    void drawBall(){
+        draw();
+        move();
+    }
+private:
+    float x = 0.0f;
+    float y = -0.75f;
+    float angle = 3.14f;
+    const float radius = 0.02f;
+    const float speed = 0.01f;
+
+    void draw(){
+        int num_segments = 16;
+        glColor3f(1.0f, 1.0f, 1.0f); 
+        glLineWidth(1.0f);
+        glBegin(GL_LINE_LOOP);
+        for (int i = 0; i < num_segments; i++) {
+            float theta = 2.0f * 3.14f * float(i) / float(num_segments);
+            glVertex2f(this->x + this->radius * cos(theta), this->y + this->radius * sin(theta));
+        }
+        glEnd();
+    }
+    void move(){
+        this->x += speed*sin(this->angle);
+        this->y += speed*cos(this->angle);
+    }
+};
+
+Ball ball = Ball();
+Battlefield battlefield =  Battlefield ();
+Plarform plarform = Plarform();
+
+static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+{
+    // Проверка, была ли нажата клавиша A или D.
+    if (key == GLFW_KEY_A)
+    {
+        if (action == GLFW_PRESS || action == GLFW_REPEAT)
+        {
+            // Уменьшение значения x при нажатии клавиши A.
+            plarform.MovePlarform(-0.02f);
+        }
+    }
+    else if (key == GLFW_KEY_D)
+    {
+        if (action == GLFW_PRESS || action == GLFW_REPEAT)
+        {
+            // Увеличение значения x при нажатии клавиши D.
+            plarform.MovePlarform(0.02f);
+        }
+    }
+}
 
 int main() {
-    
-    srand(static_cast<unsigned int>(time(0)));
-
-    // Заполнение сетки случайными значениями
-	
     GLFWwindow* window;
-    Battlefield battlefield =  Battlefield ();
 
     if (!glfwInit())
         return -1;
@@ -137,13 +213,15 @@ int main() {
     }
 
     glfwMakeContextCurrent(window);
-    // glfwSetMouseButtonCallback(window, mouse_button_callback);
+    glfwSetKeyCallback(window, keyCallback);
 
     while (!glfwWindowShouldClose(window)) {
 
         glClear(GL_COLOR_BUFFER_BIT);
 
         battlefield.drawBattlefield();
+        plarform.drawPlarform();
+        ball.drawBall();
 
         glfwSwapBuffers(window);
 
