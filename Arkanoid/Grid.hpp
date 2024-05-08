@@ -28,6 +28,16 @@ public:
     void drawGrid(){
         draw();
     }
+    void deleteSquare(int i, int j){
+        if (grid[i][j]->destructibility){
+            delete grid[i][j];
+            grid[i][j] = nullptr;
+        }
+    }
+    
+    Square* getGrid(int i, int j) {
+        return grid[i][j];
+    }
     ~Grid(){
         for (int i = 0; i < GRID_SIZE; i++) {
             for (int j = 0; j < GRID_SIZE; j++) {

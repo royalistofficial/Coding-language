@@ -15,6 +15,8 @@ public:
         this->plarform->drawPlarform();
         this->ball->drawBall();
         this->ball->moveBall();
+        this->ball->collision(&plarform);
+        this->ball->collision(&grid);
     }
     Plarform* getPlatform() {
         return plarform;

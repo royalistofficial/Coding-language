@@ -11,6 +11,14 @@ class Plarform{
             this->x += dx;
     }
 
+    float getX() {
+        return x;
+    }
+    int getSizePlarform() {
+        return SizePlarform;
+    }
+
+
     private:
     float x = 0;
     int SizePlarform = 50;

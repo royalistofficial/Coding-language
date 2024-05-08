@@ -5,7 +5,7 @@
 #pragma once
 const int WIDTH = 600;
 const int HEIGHT = 600;
-const int GRID_SIZE = 100; // размер сетки (GRID_SIZExGRID_SIZE квадратов)
+const int GRID_SIZE = 50; // размер сетки (GRID_SIZExGRID_SIZE квадратов)
 const float SQUARE_SIZE = WIDTH / GRID_SIZE; // размер каждого квадрата
 
 // Цвета квадратов
