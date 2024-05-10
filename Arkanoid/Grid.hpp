@@ -1,5 +1,6 @@
 #include "Square.hpp"
 #include "const.hpp"
+
 class Grid{
 public:
     Grid(){
@@ -10,31 +11,53 @@ public:
             }
         }
         // заполнение разрушающимеся блоками
-        for (int i = 1; i < GRID_SIZE/2; i++) {
+        // for (int i = 1; i < GRID_SIZE/2; i++) {
+        //     for (int j = 1; j < GRID_SIZE-1; j++) {
+        //         int colorIndex =  1 + rand() % (COLORS.size() - 1);
+        //         grid[i][j] = new Square(COLORS[colorIndex][0], COLORS[colorIndex][1], COLORS[colorIndex][2], colorIndex);
+        //     }
+        // }
+
+        for (int i = 1; i < GRID_SIZE/4; i++) {
             for (int j = 1; j < GRID_SIZE-1; j++) {
                 int colorIndex =  1 + rand() % (COLORS.size() - 1);
-                grid[i][j] = new Square(COLORS[colorIndex][0], COLORS[colorIndex][1], COLORS[colorIndex][2], true);
+                grid[i][j] = new Square(COLORS[colorIndex][0], COLORS[colorIndex][1], COLORS[colorIndex][2], colorIndex);
             }
         }
+        for (int i = 1; i < GRID_SIZE-1; i++) {
+            if (i != GRID_SIZE/2 -1  && i != GRID_SIZE/2)
+                grid[GRID_SIZE/2][i] = new Square(1.0f, 1.0f, 1.0f, -1);
+        }
+
         // граница
         for (int i = 0; i < GRID_SIZE; i++) {
-            grid[0][i] = new Square(1.0f, 1.0f, 1.0f, false);
+            grid[0][i] = new Square(1.0f, 1.0f, 1.0f, -1);
         }
         for (int i = 1; i < GRID_SIZE; i++) {
-            grid[i][0] = new Square(1.0f, 1.0f, 1.0f, false);
-            grid[i][GRID_SIZE-1] = new Square(1.0f, 1.0f, 1.0f, false);
+            grid[i][0] = new Square(1.0f, 1.0f, 1.0f, -1);
+            grid[i][GRID_SIZE-1] = new Square(1.0f, 1.0f, 1.0f, -1);
         }
     }
     void drawGrid(){
         draw();
     }
-    void deleteSquare(int i, int j){
-        if (grid[i][j]->destructibility){
-            delete grid[i][j];
-            grid[i][j] = nullptr;
+    void deleteSquare(int i, int j, std::vector<Bonus*>& bonuses){
+        if (grid[i][j]-> destructibility != -1){
+            grid[i][j]->destructibility --;
+            if (grid[i][j]->destructibility ==0){
+                delete grid[i][j];
+                grid[i][j] = nullptr;
+                int random = rand()%1;
+                if (random == 0)
+                    bonuses.push_back(new AddBall(i, j));
+                return;
+            }
+            grid[i][j]->colorR = COLORS[grid[i][j]-> destructibility][0];
+            grid[i][j]->colorG = COLORS[grid[i][j]-> destructibility][1];
+            grid[i][j]->colorB = COLORS[grid[i][j]-> destructibility][2];
         }
     }
-    
+
     Square* getGrid(int i, int j) {
         return grid[i][j];
     }

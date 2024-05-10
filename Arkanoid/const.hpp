@@ -3,11 +3,13 @@
 #include <vector>
 #include <cmath>
 #pragma once
+
 const int WIDTH = 600;
 const int HEIGHT = 600;
 const int GRID_SIZE = 50; // размер сетки (GRID_SIZExGRID_SIZE квадратов)
 const float SQUARE_SIZE = WIDTH / GRID_SIZE; // размер каждого квадрата
-
+const float SPEEDPLATFORM = 0.05f;
+const float SPEEDBONUS = 0.01f;
 // Цвета квадратов
 const std::vector<std::vector<float>> COLORS = {
     {0.0f, 0.0f, 0.0f}, // черный
@@ -28,3 +30,4 @@ const std::vector<std::vector<float>> COLORS = {
     // {0.6f, 0.2f, 0.8f}, // малиновый
     // {0.4f, 0.6f, 0.2f}, // оливковый
 };
+

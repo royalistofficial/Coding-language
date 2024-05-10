@@ -1,29 +1,36 @@
 #include "const.hpp"
+
 class Ball {
 public:
     void drawBall(){
         draw();
     }
     void moveBall(){
-        move();
+        this->x += speed*sin(this->angle);
+        this->y += speed*cos(this->angle);
+
+        if(this->x > 1)
+            x -=  5.0f/ GRID_SIZE;
+        else if(this->x < -1)
+            x +=  5.0f/ GRID_SIZE;
+        else if(this->y > 1)
+            y -=  5.0f/ GRID_SIZE;
     }
 
     void collision(Plarform** plarform){
         float platformX = (*plarform)->getX();
         int SizePlarform = (*plarform)->getSizePlarform();
         if( checkingPlarform(platformX, SizePlarform)){
-            angle += 3.14f - (platformX - this->x)/2; 
-            move(); 
+            angle = 3.14f - angle - (platformX - this->x)/2; 
             }            
     }
 
-    void collision(Grid** grid){
+    void collision(Grid** grid, std::vector<Bonus*>& bonuses){
         for (int i = 0; i < GRID_SIZE; i++) {
             for (int j = 0; j < GRID_SIZE; j++) {
-                if ( (*grid)->getGrid(i,j) != nullptr && checkingGrid(i, j)){
-                    move(); 
-                    (*grid)->deleteSquare(i,j);
-                    return;
+                if ( (*grid)->getGrid(i,j) != nullptr && checkingGrid(i, j)){ 
+                    (*grid)->deleteSquare(i,j, bonuses);
+                    moveBall();
                 }
             }
         }
@@ -33,11 +40,11 @@ private:
     float x = 0.0f;
     float y = -0.75f;
     float angle = 3.14f;
-    const float radius = 0.02f;
-    const float speed = 0.03f;
+    float radius = 0.015f;
+    float speed = 0.01f;
 
     void draw(){
-        int num_segments = 16;
+        const int num_segments = 16;
         glColor3f(1.0f, 1.0f, 1.0f); 
         glLineWidth(1.0f);
         glBegin(GL_LINE_LOOP);
@@ -46,10 +53,6 @@ private:
             glVertex2f(this->x + this->radius * cos(theta), this->y + this->radius * sin(theta));
         }
         glEnd();
-    }
-    void move(){
-        this->x += speed*sin(this->angle);
-        this->y += speed*cos(this->angle);
     }
     bool checkingPlarform(float platformX, int SizePlarform){
         float x1 = platformX - (float(SizePlarform) / (GRID_SIZE * 2.0f));
@@ -64,11 +67,28 @@ private:
         float x2 = -1.0f + 2.0f * (col+1) / GRID_SIZE;
         float y1 = 1.0f - 2.0f * (row) / GRID_SIZE;
         float y2 = 1.0f - 2.0f * (row+1) / GRID_SIZE;
-        if (checkingTouchLine(x1, y1, x2, y1) || checkingTouchLine(x1, y2, x2, y2)){
-            angle += 3.14f; 
+        bool top = checkingTouchLine(x1, y2, x2, y2);
+        bool low = checkingTouchLine(x1, y1, x2, y1);
+        bool left = checkingTouchLine(x1, y1, x1, y2);
+        bool right = checkingTouchLine(x2, y1, x2, y2);
+        // if (top && left){
+        //     angle = 3.14f - 2 * angle; 
+        //     return true;
+        // }else if (top && right){
+        //     angle = 3.14f - 2 * angle; 
+        //     return true;
+        // }else if (low && left ){
+        //     angle =  3.14f - 2 * angle; 
+        //     return true;
+        // }else if (low && right){
+        //     angle = 3.14f - 2 * angle; 
+        //     return true;
+        // }else 
+        if (top || low){
+            angle = 3.14f - angle; 
             return true;
-        }else if (checkingTouchLine(x1, y1, x1, y2) || checkingTouchLine(x2, y1, x2, y2)){
-            angle += 3.14f/2; 
+        }else if (left || right){
+            angle = 2* 3.14f - angle; 
             return true;
         }
         return false;
