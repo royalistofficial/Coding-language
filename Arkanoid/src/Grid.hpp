@@ -1,3 +1,7 @@
+#include "const.hpp"
+#include "bonus.hpp"
+
+#pragma once
 struct Square {
     float colorR;
     float colorG;
@@ -10,4 +14,20 @@ struct Square {
         this->colorB = b;
         this->destructibility = destructibility;
     }
+};
+
+
+class Grid {
+public:
+    Grid();
+    void drawGrid();
+    void deleteSquare(int i, int j, std::vector<Bonus*>& bonuses);
+    Square* getGrid(int i, int j);
+    ~Grid();
+
+private:
+    Square *grid[GRID_SIZE][GRID_SIZE];
+
+    void draw();
+    void drawSquare(int row, int col);
 };
