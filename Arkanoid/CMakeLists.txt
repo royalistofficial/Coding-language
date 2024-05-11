@@ -6,17 +6,21 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 # Добавление исполняемого файла
-add_executable(game
+add_executable(Arkanoid
     src/main.cpp
     src/Ball.cpp
     src/Battlefield.cpp
     src/bonus.cpp
     src/Grid.cpp
-    src/Plarform.cpp
+    src/Platform.cpp
 )
 
-# Указание пути к заголовочным файлам
-target_include_directories(game PUBLIC include)
+# Включение папки с заголовочными файлами
+target_include_directories(Arkanoid PUBLIC include)
 
 # Указание библиотек для линковки
-target_link_libraries(game glfw GL GLU)
+find_package(glfw3 REQUIRED)
+find_package(OpenGL REQUIRED)
+
+target_link_libraries(Arkanoid glfw)
+target_link_libraries(Arkanoid OpenGL::GL)

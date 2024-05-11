@@ -1,8 +1,4 @@
 #include "const.hpp"
-#include "Grid.hpp"
-#include "Ball.hpp"
-#include "Plarform.hpp"
-#include "bonus.hpp"
 
 class Battlefield {
 public:

@@ -1,4 +1,4 @@
-#include "Plarform.hpp"
+#include "Platform.hpp"
 
 Platform::Platform(){
     this->x = 0;
