@@ -1,17 +1,17 @@
 #include "Battlefield.hpp"
 
 Battlefield::Battlefield() {
-    // plarform = new Plarform();
+    platform = new Platform();
     // balls.push_back(new Ball());
     grid = new Grid;
     }
 
 void Battlefield::newIterationBattlefield(){
     this->grid->drawGrid();
-    // this->plarform->drawPlarform();
+    this->platform->drawPlatform();
     // for (auto& ball : balls) {
     //     ball->drawBall();
-    //     ball->collision(&plarform);
+    //     ball->collision(&platform);
     //     ball->collision(&grid, bonuses);
     //     ball->moveBall();
     // }
@@ -19,7 +19,7 @@ void Battlefield::newIterationBattlefield(){
     //     if (bonus != nullptr){
     //         bonus->drawBonus();
     //         bonus->moveBonus();
-    //         if (bonus->collision(&plarform)){
+    //         if (bonus->collision(&platform)){
     //             bonus->useBonus(balls);
     //             delete bonus;
     //             bonus = nullptr;
@@ -33,13 +33,14 @@ void Battlefield::newIterationBattlefield(){
         // }
 
 }
-// Plarform* Battlefield::getPlatform() {
-//     return plarform;
-// }
+
+void Battlefield::MovePlatform(const float dx) {
+    this->platform->movePlatform(dx);
+}
 
 Battlefield::~Battlefield() {
     delete grid;
-    // delete plarform;
+    delete platform;
     // for (auto& ball : balls) {
     //     delete ball;
     // }
@@ -47,4 +48,3 @@ Battlefield::~Battlefield() {
     //     delete bonus;
     // }
 }
-

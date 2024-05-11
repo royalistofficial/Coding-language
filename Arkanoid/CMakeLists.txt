@@ -5,8 +5,8 @@ add_executable(Game
     src/main.cpp
     src/Battlefield.cpp
     src/Grid.cpp
+    src/Platform.cpp
     # src/Bonus.cpp
-    # src/Platform.cpp
 )
 
 target_include_directories(Game PRIVATE include)
