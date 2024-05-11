@@ -1,5 +1,6 @@
+#pragma once
 #include "const.hpp"
-#pragma once 
+ 
 
 class Platform {
 public:

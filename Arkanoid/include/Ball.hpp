@@ -1,5 +1,9 @@
-#include "const.hpp"
 #pragma once
+#include "const.hpp"
+#include "Platform.hpp"
+#include "Grid.hpp"
+#include "Bonus.hpp"
+
 
 class Ball {
 public:

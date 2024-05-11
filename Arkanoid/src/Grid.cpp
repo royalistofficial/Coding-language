@@ -1,4 +1,5 @@
 #include "Grid.hpp"
+#include "const.hpp"
 
 Grid::Grid() {
     // создание поля
@@ -6,26 +7,6 @@ Grid::Grid() {
         for (int j = 0; j < GRID_SIZE; j++) {
             grid[i][j] = nullptr;
         }
-    }
-
-    // заполнение разрушающимеся блоками
-        // for (int i = 1; i < GRID_SIZE/2; i++) {
-        //     for (int j = 1; j < GRID_SIZE-1; j++) {
-        //         int colorIndex =  1 + rand() % (COLORS.size() - 1);
-        //         grid[i][j] = new Square(COLORS[colorIndex][0], COLORS[colorIndex][1], COLORS[colorIndex][2], colorIndex);
-        //     }
-     // }
-
-    // заполнение разрушающимеся блоками
-    for (int i = 1; i < GRID_SIZE/4; i++) {
-        for (int j = 1; j < GRID_SIZE-1; j++) {
-            int colorIndex =  1 + rand() % (COLORS.size() - 1);
-            grid[i][j] = new Square(COLORS[colorIndex][0], COLORS[colorIndex][1], COLORS[colorIndex][2], colorIndex);
-        }
-    }
-    for (int i = 1; i < GRID_SIZE-1; i++) {
-        if (i != GRID_SIZE/2 -1  && i != GRID_SIZE/2)
-            grid[GRID_SIZE/2][i] = new Square(1.0f, 1.0f, 1.0f, -1);
     }
 
     // граница
@@ -36,32 +17,51 @@ Grid::Grid() {
         grid[i][0] = new Square(1.0f, 1.0f, 1.0f, -1);
         grid[i][GRID_SIZE-1] = new Square(1.0f, 1.0f, 1.0f, -1);
     }
+    // заполнение разрушающимеся блоками
+    for (int i = 1; i < GRID_SIZE/2; i++) {
+        for (int j = 1; j < GRID_SIZE-1; j++) {
+            int colorIndex = rand() % 3;
+            grid[i][j] = new Square(COLORS[colorIndex][0], COLORS[colorIndex][1], COLORS[colorIndex][2], colorIndex+1);
+        }
+    }
+
+    // заполнение разрушающимеся блоками
+    // for (int i = 1; i < GRID_SIZE/4; i++) {
+    //     for (int j = 1; j < GRID_SIZE-1; j++) {
+    //         int colorIndex =  1 + rand() % (COLORS.size() - 1);
+    //         grid[i][j] = new Square(COLORS[colorIndex][0], COLORS[colorIndex][1], COLORS[colorIndex][2], colorIndex);
+    //     }
+    // }
+    // for (int i = 1; i < GRID_SIZE-1; i++) {
+    //     if (i != GRID_SIZE/2 -1  && i != GRID_SIZE/2)
+    //         grid[GRID_SIZE/2][i] = new Square(1.0f, 1.0f, 1.0f, -1);
+    // }
 }
 
 void Grid::drawGrid(){
     draw();
 }
 
-void Grid::deleteSquare(int i, int j, std::vector<Bonus*>& bonuses){
-    if (grid[i][j]-> destructibility != -1){
-        grid[i][j]->destructibility --;
-        if (grid[i][j]->destructibility ==0){
-            delete grid[i][j];
-            grid[i][j] = nullptr;
-            int random = rand()%1;
-            // if (random == 0)
-                // bonuses.push_back(new AddBall(i, j));
-            return;
-        }
-        grid[i][j]->colorR = COLORS[grid[i][j]-> destructibility][0];
-        grid[i][j]->colorG = COLORS[grid[i][j]-> destructibility][1];
-        grid[i][j]->colorB = COLORS[grid[i][j]-> destructibility][2];
-    }
-}
+// void Grid::deleteSquare(int i, int j){
+//     if (grid[i][j]-> destructibility != -1){
+//         grid[i][j]->destructibility --;
+//         if (grid[i][j]->destructibility ==0){
+//             delete grid[i][j];
+//             grid[i][j] = nullptr;
+//             //int random = rand()%1;
+//             // if (random == 0)
+//                 // bonuses.push_back(new AddBall(i, j));
+//             return;
+//         }
+//         grid[i][j]->colorR = COLORS[grid[i][j]-> destructibility][0];
+//         grid[i][j]->colorG = COLORS[grid[i][j]-> destructibility][1];
+//         grid[i][j]->colorB = COLORS[grid[i][j]-> destructibility][2];
+//     }
+// }
 
-Square* Grid::getGrid(int i, int j) {
-    return grid[i][j];
-}
+// Square* Grid::getGrid(int i, int j) {
+//     return grid[i][j];
+// }
 
 Grid::~Grid(){
     for (int i = 0; i < GRID_SIZE; i++) {

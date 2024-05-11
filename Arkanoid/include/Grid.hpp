@@ -1,7 +1,5 @@
-#include "const.hpp"
-#include "bonus.hpp"
-
 #pragma once
+#include "const.hpp"
 struct Square {
     float colorR;
     float colorG;
@@ -21,8 +19,8 @@ class Grid {
 public:
     Grid();
     void drawGrid();
-    void deleteSquare(int i, int j, std::vector<Bonus*>& bonuses);
-    Square* getGrid(int i, int j);
+    // void deleteSquare(int i, int j);
+    // Square* getGrid(int i, int j);
     ~Grid();
 
 private:

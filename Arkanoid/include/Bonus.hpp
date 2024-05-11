@@ -1,6 +1,6 @@
 #pragma once 
 #include "const.hpp"
-#include "Plarform.hpp"
+#include "Platform.hpp"
 #include "Ball.hpp"
 
 class Bonus {
@@ -9,7 +9,7 @@ public:
     virtual void moveBonus() = 0;
     virtual void drawBonus() = 0;
     virtual void useBonus(std::vector<Ball*>& Balls) = 0;
-    bool collision(Plarform* plarform);
+    bool collision(Platform* plarform);
 
 protected:
     float x;

@@ -11,8 +11,8 @@ const float SQUARE_SIZE = WIDTH / GRID_SIZE; // размер каждого кв
 const float SPEEDPLATFORM = 0.05f;
 const float SPEEDBONUS = 0.01f;
 // Цвета квадратов
-const std::vector<std::vector<float>> COLORS = {
-    {0.0f, 0.0f, 0.0f}, // черный
+const float COLORS[3][3]= {
+    // {0.0f, 0.0f, 0.0f}, // черный
     {1.0f, 0.0f, 0.0f}, // красный
     {0.0f, 1.0f, 0.0f}, // зеленый
     {0.0f, 0.0f, 1.0f}, // синий
@@ -30,4 +30,3 @@ const std::vector<std::vector<float>> COLORS = {
     // {0.6f, 0.2f, 0.8f}, // малиновый
     // {0.4f, 0.6f, 0.2f}, // оливковый
 };
-
