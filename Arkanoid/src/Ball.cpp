@@ -2,7 +2,7 @@
 
 Ball::Ball() {
     x = 0.0f + 0.1f*(1-2*float(rand()%100)/100);
-    y = -0.5f + 0.1f*(1-2*float(rand()%100)/100);
+    y = -0.5f + 0.05f*(1-2*float(rand()%100)/100);
     angle = PI + 0.1f*(1-2*float(rand()%100)/100);
     speed = MINSPEEDBALL;
     numSleepSpeed = -1;

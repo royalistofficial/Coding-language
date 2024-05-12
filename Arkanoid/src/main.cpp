@@ -2,6 +2,7 @@
 
 
 Battlefield* battlefield = new Battlefield ();
+
 static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     // Проверка, была ли нажата клавиша A или D.
@@ -19,6 +20,14 @@ static void keyCallback(GLFWwindow* window, int key, int scancode, int action, i
         {
             // Увеличение значения x при нажатии клавиши D.
             (*battlefield).MovePlatform(SPEEDPLATFORM);
+        }
+    }else if (key == GLFW_KEY_Q)
+    {
+        if (action == GLFW_PRESS || action == GLFW_REPEAT)
+        {
+            // рестарт игры
+            delete battlefield;
+            battlefield = new Battlefield ();
         }
     }
 }
@@ -44,6 +53,9 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         (*battlefield).newIterationBattlefield();
+        glScalef(0.015, -0.015, 1);
+        print_string(-100.0f, 0.0f, "0", 0,1,0);
+        glScalef(1 / 0.015, 1 / -0.015, 1);
 
         glfwSwapBuffers(window);
 
