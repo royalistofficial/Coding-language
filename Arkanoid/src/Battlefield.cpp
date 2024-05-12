@@ -5,7 +5,7 @@ Battlefield::Battlefield() {
     balls.push_back(new Ball());
     grid = new Grid;
     score = 0;
-    }
+}
 
 void Battlefield::newIterationBattlefield(){
     this->grid->drawGrid();
@@ -16,10 +16,22 @@ void Battlefield::newIterationBattlefield(){
             collisionPlatform(ball);
             collisionGrid(ball);
             ball->moveBall();
-            if(ball->GetX() < -1.1){
+            if(ball->GetY() < -1.1){
                 delete ball;
                 ball = nullptr;
             }
+        }
+    }
+    int minExtraLife = 10;
+    for (auto& ball : balls) {
+        if (ball != nullptr){
+            if(ball->GetExtraLife()<minExtraLife)
+                minExtraLife = ball->GetExtraLife();
+        }
+    }
+    for (auto& ball : balls) {
+        if (ball != nullptr){
+            ball->SetExtraLife(minExtraLife);
         }
     }
 
@@ -43,7 +55,7 @@ void Battlefield::newIterationBattlefield(){
     drawScore();
 }
 void Battlefield::drawScore(){
-    char text[5];
+    char text[10];
     snprintf(text, sizeof(text), "%d", score);
     print_string(0.01f, -0.95f, -0.95f, text, 0.95f, 0.95f, 0.95f);
 }
@@ -76,6 +88,8 @@ void Battlefield::collisionGrid(Ball* ball){
                         bonuses.push_back(new AddBallBonus(i, j));
                     else if (randomBonus == 1)
                         bonuses.push_back(new SpeedUpBonus(i, j));
+                    else if (randomBonus == 2)
+                        bonuses.push_back(new ExtraLifeBonus(i, j));
                 }
                 ball->moveBall();
             }

@@ -8,8 +8,9 @@ const float PI = 3.14159265359f;
 const int WIDTH = 600;
 const int HEIGHT = 600;
 const int GRID_SIZE = 50; // размер сетки (GRID_SIZExGRID_SIZE квадратов)
-const float SQUARE_SIZE = WIDTH / GRID_SIZE; // размер каждого квадрата
+
 const float SPEEDPLATFORM = 0.05f;
+
 const float SPEEDBONUS = 0.01f;
 const float BONUSRADIUS = 0.01f;
 
@@ -17,6 +18,7 @@ const float BALLRADIUS = 0.017f;
 const float MINSPEEDBALL = 0.01f;
 const float MAXSPEEDBALL = 0.015f;
 const int NUMSLEEPSPEED = 600;
+
 // Цвета квадратов
 const float COLORS[4][3]= {
     {0.0f, 0.0f, 0.0f}, // черный

@@ -6,6 +6,7 @@ Ball::Ball() {
     angle = PI + 0.1f*(1-2*float(rand()%100)/100);
     speed = MINSPEEDBALL;
     numSleepSpeed = -1;
+    extraLife = 0;
 }
 
 void Ball::drawBall(){
@@ -22,6 +23,10 @@ void Ball::moveBall(){
         x +=  7.5f/ GRID_SIZE;
     else if(this->y > 1)
         y -=  7.5f/ GRID_SIZE;
+    else if((this->y < -1) && (extraLife > 0)){
+        this->angle = PI - this->angle;
+        --extraLife;
+    }
 
     if(numSleepSpeed != -1){
         if (numSleepSpeed == 0)
@@ -71,11 +76,15 @@ float Ball::GetX(){
 float Ball::GetY(){
     return y;
 }
-
+int Ball::GetExtraLife(){
+    return extraLife;
+}
 float Ball::GetAngle(){
     return angle;
 }
-
+void Ball::SetExtraLife(int i){
+    extraLife = i;
+}
 void Ball::SetAngle(float angle){
     this->angle = angle;
 }

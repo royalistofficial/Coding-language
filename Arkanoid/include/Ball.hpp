@@ -16,13 +16,16 @@ public:
     float GetX();
     float GetY();
     float GetAngle();
+    int GetExtraLife();
     void SetAngle(float angle);
+    void SetExtraLife(int i);
 
 private:
     float x;
     float y;
     float angle;
     float speed;
+    int extraLife;
     int numSleepSpeed;
 
     void draw();

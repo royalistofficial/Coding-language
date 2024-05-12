@@ -56,3 +56,17 @@ void SpeedUpBonus::useBonus(std::vector<Ball*>& balls) {
         }
     }
 }
+
+ExtraLifeBonus::ExtraLifeBonus(int row, int col) : Bonus(row, col) {
+    colorR = 0.75f;
+    colorG = 0.25f;
+    colorB = 0.0f;
+}
+
+void ExtraLifeBonus::useBonus(std::vector<Ball*>& balls) {
+    for (auto& ball : balls) {
+        if (ball != nullptr){
+            ball->SetExtraLife( ball->GetExtraLife() + 1 );
+        }
+    }
+}

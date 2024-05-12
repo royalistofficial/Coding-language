@@ -33,3 +33,8 @@ public:
     void useBonus(std::vector<Ball*>& Balls) override;
 };
 
+class ExtraLifeBonus: public Bonus {
+public:
+    ExtraLifeBonus(int row, int col);
+    void useBonus(std::vector<Ball*>& Balls) override;
+};
