@@ -53,9 +53,6 @@ int main() {
         glClear(GL_COLOR_BUFFER_BIT);
 
         (*battlefield).newIterationBattlefield();
-        glScalef(0.015, -0.015, 1);
-        print_string(-100.0f, 0.0f, "0", 0,1,0);
-        glScalef(1 / 0.015, 1 / -0.015, 1);
 
         glfwSwapBuffers(window);
 

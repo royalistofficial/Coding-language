@@ -17,11 +17,11 @@ void Ball::moveBall(){
     this->y += speed*cos(this->angle);
 
     if(this->x > 1)
-        x -=  5.0f/ GRID_SIZE;
+        x -=  7.5f/ GRID_SIZE;
     else if(this->x < -1)
-        x +=  5.0f/ GRID_SIZE;
+        x +=  7.5f/ GRID_SIZE;
     else if(this->y > 1)
-        y -=  5.0f/ GRID_SIZE;
+        y -=  7.5f/ GRID_SIZE;
 
     if(numSleepSpeed != -1){
         if (numSleepSpeed == 0)

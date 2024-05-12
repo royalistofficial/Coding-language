@@ -17,6 +17,8 @@ private:
     Platform *platform;
     std::vector<Ball*> balls;
     std::vector<Bonus*> bonuses;
+    int score;
+    void drawScore();
     void collisionPlatform(Ball* ball);
     void collisionGrid(Ball* ball);
     void collisionBall(Ball* ball1, Ball* ball2);

@@ -1,9 +1,10 @@
 #include "Battlefield.hpp"
-
+#include "RenderText.hpp"
 Battlefield::Battlefield() {
     platform = new Platform();
     balls.push_back(new Ball());
     grid = new Grid;
+    score = 0;
     }
 
 void Battlefield::newIterationBattlefield(){
@@ -39,7 +40,12 @@ void Battlefield::newIterationBattlefield(){
                 collisionBall(balls[i],balls[j]);
         }
     }
-
+    drawScore();
+}
+void Battlefield::drawScore(){
+    char text[5];
+    snprintf(text, sizeof(text), "%d", score);
+    print_string(0.01f, -0.95f, -0.95f, text, 0.95f, 0.95f, 0.95f);
 }
 
 void Battlefield::MovePlatform(const float dx) {
@@ -63,8 +69,9 @@ void Battlefield::collisionGrid(Ball* ball){
     for (int i = 0; i < GRID_SIZE; i++) {
         for (int j = 0; j < GRID_SIZE; j++) {
             if ( grid->getGrid(i,j) != nullptr && checkingGrid(i, j, ball)){ 
+                this->score += 1;
                 if (grid->deleteSquare(i,j)){
-                    int randomBonus = rand() % 3;
+                    int randomBonus = rand() % 4;
                     if (randomBonus == 0)
                         bonuses.push_back(new AddBallBonus(i, j));
                     else if (randomBonus == 1)
