@@ -1,5 +1,6 @@
 #pragma once
 #include "const.hpp"
+
 struct Square {
     float colorR;
     float colorG;
@@ -19,13 +20,12 @@ class Grid {
 public:
     Grid();
     void drawGrid();
-    // void deleteSquare(int i, int j);
-    // Square* getGrid(int i, int j);
+    bool deleteSquare(int i, int j);
+    Square* getGrid(int i, int j);
     ~Grid();
 
 private:
     Square *grid[GRID_SIZE][GRID_SIZE];
-
     void draw();
     void drawSquare(int row, int col);
 };

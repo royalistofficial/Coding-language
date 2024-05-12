@@ -1,4 +1,4 @@
-#include "bonus.hpp"
+#include "Bonus.hpp"
 
 Bonus::Bonus(int row, int col) {
     this->x = -1.0f + 2.0f * (col + 0.5f) / GRID_SIZE;
@@ -13,13 +13,11 @@ void Bonus::drawBonus() {
     draw();
 }
 
-bool Bonus::collision(Plarform* plarform) {
-    float platformX = (*plarform)->getX();
-    int SizePlarform = (*plarform)->getSizePlatform();
-    if (std::abs(platformX - this->x) <= SizePlarform + radius && std::abs(this->y + 1) <= radius) {
-        return true;
-    }
-    return false;
+float Bonus::GetX(){
+    return x;
+}
+float Bonus::GetY(){
+    return y;
 }
 
 void Bonus::draw() {
@@ -29,17 +27,32 @@ void Bonus::draw() {
     glBegin(GL_LINE_LOOP);
     for (int i = 0; i < num_segments; i++) {
         float theta = 2.0f * 3.14f * float(i) / float(num_segments);
-        glVertex2f(this->x + this->radius * cos(theta), this->y + this->radius * sin(theta));
+        glVertex2f(this->x + BONUSRADIUS * cos(theta), this->y + BONUSRADIUS * sin(theta));
     }
     glEnd();
 }
 
-AddBall::AddBall(int row, int col) : Bonus(row, col) {
-    colorR = 0.5f;
-    colorG = 0.0f;
-    colorB = 0.5f;
+AddBallBonus::AddBallBonus(int row, int col) : Bonus(row, col) {
+    colorR = 0.9f;
+    colorG = 0.25f;
+    colorB = 0.25f;
 }
 
-void AddBall::useBonus(std::vector<Ball*>& Balls) {
+void AddBallBonus::useBonus(std::vector<Ball*>& Balls) {
     Balls.push_back(new Ball());
+}
+
+
+SpeedUpBonus::SpeedUpBonus(int row, int col) : Bonus(row, col) {
+    colorR = 0.75f;
+    colorG = 0.5f;
+    colorB = 0.25f;
+}
+
+void SpeedUpBonus::useBonus(std::vector<Ball*>& balls) {
+    for (auto& ball : balls) {
+        if (ball != nullptr){
+            ball->SpeedUp();
+        }
+    }
 }

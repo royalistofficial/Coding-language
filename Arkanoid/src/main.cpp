@@ -5,7 +5,6 @@ Battlefield* battlefield = new Battlefield ();
 static void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
     // Проверка, была ли нажата клавиша A или D.
-
     if (key == GLFW_KEY_A)
     {
         if (action == GLFW_PRESS || action == GLFW_REPEAT)
