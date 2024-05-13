@@ -94,7 +94,11 @@ bool Battlefield::checkingGrid(int row, int col, Ball* ball){
     bool low = ball->checkingTouchLine(x1, y1, x2, y1);
     bool left = ball->checkingTouchLine(x1, y1, x1, y2);
     bool right = ball->checkingTouchLine(x2, y1, x2, y2);
-    if (top || low){
+    if (top && (left || right) || low && (left || right)){
+        std::cout<<'+'<<std::endl;
+        ball->SetAngle( PI - ball->GetAngle()); 
+        return true;
+    }else if (top || low){
         ball->SetAngle(PI - ball->GetAngle()); 
         return true;
     }else if (left || right){
@@ -116,8 +120,12 @@ void Battlefield::collisionBall(Ball* ball1, Ball* ball2){
     float dx = std::abs(ball1->GetX()-ball2->GetX());
     float dy = std::abs(ball1->GetY()-ball2->GetY());
     if(std::sqrt(dx*dx+dy*dy)<2*BALLRADIUS){
-        ball1->SetAngle(PI+ball1->GetAngle());
-        ball2->SetAngle(PI+ball2->GetAngle());
+        float sumsin = std::sin(ball1->GetAngle()) + std::sin(ball2->GetAngle());
+        float sumcos = std::cos(ball1->GetAngle()) + std::cos(ball2->GetAngle());
+        float atg= std::atan(sumsin/sumcos);
+        float sumsqrt = std::sqrt(sumsin*sumsin + sumcos*sumcos)/2;
+        ball1->SetAngle(atg+sumsqrt);
+        ball2->SetAngle(atg-sumsqrt);
         ball1->moveBall();
         ball1->moveBall();
     }
