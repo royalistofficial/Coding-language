@@ -66,7 +66,7 @@ ExtraLifeBonus::ExtraLifeBonus(int row, int col) : Bonus(row, col) {
 void ExtraLifeBonus::useBonus(std::vector<Ball*>& balls) {
     for (auto& ball : balls) {
         if (ball != nullptr){
-            ball->SetExtraLife( ball->GetExtraLife() + 1 );
+            ball->SetExtraLife();
         }
     }
 }

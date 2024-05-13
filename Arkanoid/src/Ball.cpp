@@ -1,5 +1,7 @@
 #include "Ball.hpp"
 
+int Ball::extraLife;
+
 Ball::Ball() {
     x = 0.0f + 0.1f*(1-2*float(rand()%100)/100);
     y = -0.5f + 0.05f*(1-2*float(rand()%100)/100);
@@ -76,14 +78,12 @@ float Ball::GetX(){
 float Ball::GetY(){
     return y;
 }
-int Ball::GetExtraLife(){
-    return extraLife;
-}
+
 float Ball::GetAngle(){
     return angle;
 }
-void Ball::SetExtraLife(int i){
-    extraLife = i;
+void Ball::SetExtraLife(){
+    ++extraLife;
 }
 void Ball::SetAngle(float angle){
     this->angle = angle;

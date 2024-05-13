@@ -22,18 +22,6 @@ void Battlefield::newIterationBattlefield(){
             }
         }
     }
-    int minExtraLife = 10;
-    for (auto& ball : balls) {
-        if (ball != nullptr){
-            if(ball->GetExtraLife()<minExtraLife)
-                minExtraLife = ball->GetExtraLife();
-        }
-    }
-    for (auto& ball : balls) {
-        if (ball != nullptr){
-            ball->SetExtraLife(minExtraLife);
-        }
-    }
 
     for (auto& bonus : bonuses){
         if (bonus != nullptr){
