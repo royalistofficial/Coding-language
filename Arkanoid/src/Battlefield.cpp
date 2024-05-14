@@ -94,11 +94,7 @@ bool Battlefield::checkingGrid(int row, int col, Ball* ball){
     bool low = ball->checkingTouchLine(x1, y1, x2, y1);
     bool left = ball->checkingTouchLine(x1, y1, x1, y2);
     bool right = ball->checkingTouchLine(x2, y1, x2, y2);
-    if (top && (left || right) || low && (left || right)){
-        std::cout<<'+'<<std::endl;
-        ball->SetAngle( PI - ball->GetAngle()); 
-        return true;
-    }else if (top || low){
+    if (top || low){
         ball->SetAngle(PI - ball->GetAngle()); 
         return true;
     }else if (left || right){
