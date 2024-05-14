@@ -4,14 +4,23 @@
 #include <cmath>
 #pragma once
 
+const float PI = 3.14159265359f;
 const int WIDTH = 600;
 const int HEIGHT = 600;
 const int GRID_SIZE = 50; // размер сетки (GRID_SIZExGRID_SIZE квадратов)
-const float SQUARE_SIZE = WIDTH / GRID_SIZE; // размер каждого квадрата
+
 const float SPEEDPLATFORM = 0.05f;
+
 const float SPEEDBONUS = 0.01f;
+const float BONUSRADIUS = 0.01f;
+
+const float BALLRADIUS = 0.017f;
+const float MINSPEEDBALL = 0.01f;
+const float MAXSPEEDBALL = 0.015f;
+const int NUMSLEEPSPEED = 600;
+
 // Цвета квадратов
-const std::vector<std::vector<float>> COLORS = {
+const float COLORS[4][3]= {
     {0.0f, 0.0f, 0.0f}, // черный
     {1.0f, 0.0f, 0.0f}, // красный
     {0.0f, 1.0f, 0.0f}, // зеленый
@@ -30,4 +39,3 @@ const std::vector<std::vector<float>> COLORS = {
     // {0.6f, 0.2f, 0.8f}, // малиновый
     // {0.4f, 0.6f, 0.2f}, // оливковый
 };
-
