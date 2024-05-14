@@ -1,27 +1,8 @@
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <vector>
-#include "Student.hpp"
-
-std::vector<std::string*> readFile(const std::string& filename) {
-    std::ifstream input(filename);
-    std::string line;
-    std::vector<std::string*> inputVector;
-
-    while (std::getline(input, line)) {
-        std::string* ptr = new std::string(line);
-        inputVector.push_back(ptr);
-        //std::cout << ptr << std::endl;
-    }
-
-    input.close();
-
-    return inputVector;
-}
+#include <main.hpp>
 
 int main() {
-    std::vector<std::string*> inputVector = readFile("../input.txt");
+    std::string FileName = "./input.txt";
+    std::vector<std::string*> inputVector = readFile(FileName);
 
     std::vector< Student*> StudentList;
     for(int i = 0; i<100; i++){
@@ -54,10 +35,8 @@ int main() {
     for (const auto& student : StudentList) {
         std::cout << student->getResult() << std::endl;
     }
-
-    //std::ofstream file("input.txt");
     
-    // Освобождаем память, выделенную для студентов
+    // Освобождаем память
     for (const auto& student : StudentList) {
         delete student;
     }

@@ -2,6 +2,8 @@
 #include <cstdlib>
 #include <fstream>
 
+// дополнительный код для генерации текстового файла с квадратными уравнениями 
+
 int randomInt(const int min, const int max) {
     int randNum = min + std::rand() % (max - min + 1);
     if (randNum != 0){
