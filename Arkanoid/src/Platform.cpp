@@ -2,7 +2,7 @@
 
 Platform::Platform(){
     this->x = 0;
-    this->SizePlatform = 120;
+    this->SizePlatform = 25;
 }
 
 void Platform::drawPlatform() {
